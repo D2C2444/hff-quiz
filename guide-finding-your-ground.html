@@ -86,6 +86,9 @@
   .sympt .tickbox{flex:0 0 19px;width:19px;height:19px;border-radius:50%;border:1.5px solid var(--gold-deep);background:#fff;}
   @media print{.sympt-grid{grid-template-columns:repeat(3,1fr);}}
 
+  .pdf-btn{position:fixed;top:16px;right:16px;z-index:50;background:var(--navy);color:#fff;border:none;font-family:'Montserrat',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;padding:11px 18px;border-radius:4px;cursor:pointer;box-shadow:0 8px 20px -8px rgba(10,22,32,.6);}
+  .pdf-btn:hover{background:var(--navy-deep);}
+  @media print{.pdf-btn{display:none;}}
   .footer{background:var(--navy-deep);color:var(--gold);text-align:center;padding:20px 24px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;}
   .disclaimer{padding:20px 60px 34px;font-size:.78rem;color:#7a756c;font-style:italic;font-family:'Cormorant Garamond',serif;background:var(--cream);}
 
@@ -94,6 +97,7 @@
 </style>
 </head>
 <body>
+  <button class="pdf-btn" onclick="window.print()">⬇ Save as PDF</button>
   <div class="page">
     <div class="cover">
       <img class="cover-logo" src="hff-logo.png" alt="Hot, Foggy &amp; Fabulous" onerror="this.outerHTML='&lt;div class=\'brandmark\'&gt;Hot, Foggy &amp; &lt;b&gt;Fabulous&lt;/b&gt;&lt;/div&gt;'">
