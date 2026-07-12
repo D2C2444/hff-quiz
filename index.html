@@ -106,6 +106,11 @@
   .capture [id^="fd-form-"] h2,
   .capture [id^="fd-form-"] h3,
   .capture [id^="fd-form-"] [class*="title"]{font-family:'Cormorant Garamond',serif !important;}
+  /* Field labels + inputs render in Helvetica by default; match the quiz body font */
+  .capture [id^="fd-form-"] input,
+  .capture [id^="fd-form-"] input::placeholder,
+  .capture [id^="fd-form-"] label,
+  .capture [id^="fd-form-"] .fd-form-label{font-family:'Montserrat',sans-serif !important;}
 
   .next{text-align:center;}
   .next .lbl{text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;font-weight:600;color:var(--gold-deep);margin-bottom:10px;}
