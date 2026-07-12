@@ -280,7 +280,7 @@ function renderResult(){
           '<h3>Want your full result plus the guide?</h3>'+
           '<div class="cap-hook">Pop your email in and I\'ll send your full result, plus a short companion guide with the three things that help most right where you are.</div>'+
           '<form id="emailForm" action="https://formspree.io/f/xlgyvajl" method="POST">'+
-            '<input type="text" id="fname" name="first_name" placeholder="First name" autocomplete="given-name">'+
+            '<input type="text" id="fname" name="first_name" placeholder="First name" autocomplete="given-name" required>'+
             '<input type="email" id="email" name="email" placeholder="Your email" autocomplete="email" required>'+
             '<input type="hidden" id="stageField" name="menopause_stage" value="'+p.title+'">'+
             '<button type="submit">Send me my result</button>'+
