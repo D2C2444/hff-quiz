@@ -92,7 +92,7 @@
   .footer{background:var(--navy-deep);color:var(--gold);text-align:center;padding:20px 24px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;}
   .disclaimer{padding:20px 60px 34px;font-size:.78rem;color:#7a756c;font-style:italic;font-family:'Cormorant Garamond',serif;background:var(--cream);}
 
-  @media print{body{background:#fff;}.page{margin:0;box-shadow:none;max-width:100%;}}
+  @media print{*{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}body{background:#fff;}.page{margin:0;box-shadow:none;max-width:100%;}.pdf-btn{display:none;}}
   @media(max-width:600px){.cover,.body,.disclaimer{padding-left:28px;padding-right:28px;}.cta-band{padding-left:24px;padding-right:24px;}}
 </style>
 </head>
@@ -137,7 +137,7 @@
       </div>
 
       <div class="tool">
-        <h3>Take this to your GP</h3>
+        <h3>Take this to your GP or clinician</h3>
         <ul>
           <li><span class="tick">&#10003;</span><span>My main symptoms, and how long each has been going on</span></li>
           <li><span class="tick">&#10003;</span><span>How they're affecting my sleep, work and relationships</span></li>
