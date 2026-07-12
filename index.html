@@ -8,6 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  (function(w, d, t, h, s, n) {
+    w.FlodeskObject = n;
+    var fn = function() { (w[n].q = w[n].q || []).push(arguments); };
+    w[n] = w[n] || fn;
+    var f = d.getElementsByTagName(t)[0];
+    var v = '?v=' + Math.floor(new Date().getTime() / (h * 60 * 1000));
+    var sm = d.createElement(t); sm.async = true; sm.type = 'module'; sm.src = s + v;
+    f.parentNode.insertBefore(sm, f);
+    var sn = d.createElement(t); sn.async = true; sn.noModule = true; sn.src = s.replace('.mjs', '.js') + v;
+    f.parentNode.insertBefore(sn, f);
+  })(window, document, 'script', 0.1, 'https://assets.flodesk.com/universal.mjs', 'fd');
+</script>
 <style>
   :root{
     --navy:#203D51;
@@ -86,19 +99,13 @@
   .wins li:last-child{border-bottom:none;}
   .wins .tick{flex:0 0 24px;height:24px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;margin-top:1px;}
 
-  .capture{background:var(--navy);border-radius:6px;padding:30px 30px 32px;color:#fff;margin-bottom:26px;}
-  .capture h3{font-size:1.6rem;color:#fff;margin-bottom:8px;}
-  .capture .cap-hook{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:1.12rem;margin-bottom:18px;line-height:1.4;}
-  .capture form{display:flex;flex-direction:column;gap:11px;}
-  .capture input{width:100%;padding:15px 16px;border-radius:4px;border:none;font-family:'Montserrat',sans-serif;font-size:1rem;color:var(--ink);}
-  .capture input::placeholder{color:#8fa0ab;}
-  .capture button{background:var(--gold);color:var(--navy);border:none;font-family:'Montserrat',sans-serif;font-weight:700;
-    text-transform:uppercase;letter-spacing:.1em;font-size:.88rem;padding:16px 24px;border-radius:3px;cursor:pointer;transition:.18s;}
-  .capture button:hover{background:#fff;transform:translateY(-2px);}
-  .capture .fineprint{font-size:.74rem;color:var(--arctic);margin-top:4px;font-style:italic;font-family:'Cormorant Garamond',serif;}
-  .thanks{display:none;text-align:center;padding:6px 0;}
-  .thanks .big{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);margin-bottom:8px;}
-  .thanks p{color:#eaf2f9;font-size:.95rem;}
+  .capture{margin:6px 0 26px;}
+  /* Flodesk inline form sits here; let its own cream styling show, just center it */
+  .capture [id^="fd-form-"]{max-width:760px;margin:0 auto;}
+  .capture [id^="fd-form-"] h1,
+  .capture [id^="fd-form-"] h2,
+  .capture [id^="fd-form-"] h3,
+  .capture [id^="fd-form-"] [class*="title"]{font-family:'Cormorant Garamond',serif !important;}
 
   .next{text-align:center;}
   .next .lbl{text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;font-weight:600;color:var(--gold-deep);margin-bottom:10px;}
@@ -264,7 +271,13 @@ function scoreProfile(){
 
 function renderResult(){
   setProgress();
-  var p = RESULTS[scoreProfile()];
+  var idx = scoreProfile();
+  var p = RESULTS[idx];
+  /* Flodesk form IDs, one per result. Each form adds the subscriber to its own
+     segment (Just Noticing / In the Thick of It / Finding Your Ground), which
+     triggers the matching nurture workflow. No Zapier needed. */
+  var formIds = ['6a533e00b7ed550c9764fef8','6a5344a873b87ca8ba6e684e','6a5344fe73a927e64254cb3a'];
+  var formId = formIds[idx];
   var wins = p.wins.map(function(w){ return '<li><span class="tick">&#10003;</span><span>'+w+'</span></li>'; }).join('');
   stageEl.innerHTML =
     '<div class="result">'+
@@ -276,21 +289,7 @@ function renderResult(){
       '<ul class="wins">'+wins+'</ul>'+
 
       '<div class="capture">'+
-        '<div id="captureForm">'+
-          '<h3>Want your full result plus the guide?</h3>'+
-          '<div class="cap-hook">Pop your email in and I\'ll send your full result, plus a short companion guide with the three things that help most right where you are.</div>'+
-          '<form id="emailForm" action="https://formspree.io/f/xlgyvajl" method="POST">'+
-            '<input type="text" id="fname" name="first_name" placeholder="First name" autocomplete="given-name" required>'+
-            '<input type="email" id="email" name="email" placeholder="Your email" autocomplete="email" required>'+
-            '<input type="hidden" id="stageField" name="menopause_stage" value="'+p.title+'">'+
-            '<button type="submit">Send me my result</button>'+
-            '<div class="fineprint">No spam, ever. Just useful, warm and occasional. Unsubscribe any time.</div>'+
-          '</form>'+
-        '</div>'+
-        '<div class="thanks" id="thanks">'+
-          '<div class="big">It\'s on its way. Check your inbox.</div>'+
-          '<p>While you\'re here, here\'s the thing I\'d point you to next.</p>'+
-        '</div>'+
+        '<div id="fd-form-'+formId+'"></div>'+
       '</div>'+
 
       '<div class="next">'+
@@ -303,22 +302,11 @@ function renderResult(){
       '<button class="restart" id="restartBtn">Retake the quiz</button>'+
     '</div>';
 
-  document.getElementById('emailForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var form = e.target;
-    var showThanks = function(){
-      document.getElementById('captureForm').style.display = 'none';
-      document.getElementById('thanks').style.display = 'block';
-    };
-    /* Posts to Formspree (or any form service) without leaving the page, so she stays
-       on her result and sees the masterclass CTA. The menopause_stage field carries her
-       result so you can tag her in Flodesk. If the endpoint hasn't been set yet, we still
-       thank her so nothing looks broken while you test. */
-    if(form.action.indexOf('REPLACE_WITH') !== -1){ showThanks(); return; }
-    fetch(form.action, { method:'POST', body:new FormData(form), headers:{ 'Accept':'application/json' } })
-      .then(showThanks)
-      .catch(showThanks);
-  });
+  /* Tell Flodesk to render the matching inline form into the container we just
+     added. window.fd is queued by the loader in <head>, so this works even if
+     the Flodesk script is still loading. On submit, the form drops the person
+     into the right segment and shows its own thank-you message inline. */
+  if (window.fd) { window.fd('form', { formId: formId, containerEl: '#fd-form-'+formId }); }
   document.getElementById('restartBtn').addEventListener('click', renderIntro);
   window.scrollTo(0,0);
 }
